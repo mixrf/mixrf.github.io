@@ -1,2 +1,2 @@
-# x33333xc.github.io
-test website of mixnerf
+# mixrf.github.io
+website of MixRF
