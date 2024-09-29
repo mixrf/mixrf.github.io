@@ -10,7 +10,11 @@
 		margin-right: auto;
 		width: 1200px;
 	}
-	
+	.math-font {
+		font-family: 'Times New Roman', serif; /* 或者其他你喜欢的字体 */
+		font-size: 1.2em; /* 调整字体大小 */
+		font-weight: bold; /* 可选: 加粗 */
+	}
 	h1 {
 		font-size:32px;
 		font-weight:300;
@@ -118,7 +122,7 @@
 
 <html>
 <head>
-	<title>MixNeRF</title>
+	<title>MixRF</title>
 	<meta property="og:image" content="./resources/teaser.png"/> <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/ if you update and want to force Facebook to rescrape. -->
 	<meta property="og:title" content="MixNeRF." />
 	<meta property="og:description" content="Paper description." />
@@ -133,6 +137,7 @@
 
 		gtag('config', 'UA-75863369-6');
 	</script>
+	
 
 	<link rel="stylesheet" href="./definitive-image-comparison-slider-master/src/dics.css">
 	<script src="./definitive-image-comparison-slider-master/src/dics.js"></script>
@@ -169,7 +174,7 @@
 				<tr>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:36px">MixNeRF: Neural Radiance Mixing Fields</span>
+							<span style="font-size:36px">MixRF: Integrating Sampled Points and Ray Casting Universal Mixing Radiance Fields</span>
 						</center>
 					</td>
 				</tr>
@@ -295,22 +300,22 @@
 			<tr>
 				<td width=1200px>
 					<center>
-						<img class="round" style="width:1200px" src="./resources/network.png"/>
+						<img class="round" style="width:1200px" src="./resources/framework.jpg"/>
 					</center>
 				</td>
 			</tr>
 		</table>
 	</center>
 
-	<center>
-		<table align=center width=1200px>
-			<tr>
-				<td>
-					This was a template originally made for <a href="http://richzhang.github.io/colorization/">Colorful Image Colorization</a>. The code can be found in this <a href="https://github.com/richzhang/webpage-template">repository</a>.This was a template originally made for <a href="http://richzhang.github.io/colorization/">Colorful Image Colorization</a>. The code can be found in this <a href="https://github.com/richzhang/webpage-template">repository</a>.
-				</td>
-			</tr>
-		</table>
-	</center>
+	<div class="centered">
+        <table>
+            <tr>
+                <td>
+                    Overview of MixRF pipeline.
+                </td>
+            </tr>
+        </table>
+    </div>
 	
 	<center>
 		<table align=center width=1200px>
@@ -318,7 +323,7 @@
 				<td>
 					<center>
 						<video controls autoplay muted loop width=600px height="auto">
-							<source src = "./resources/chair_rgb.mp4" type="video/mp4">
+							<source src = "./resources/videos/drums_cat.mp4" type="video/mp4">
 							Your browser does not support the video tag.
 						</video>
 					</center>
@@ -327,7 +332,7 @@
 					<center>
 						<video controls autoplay muted loop width=600px height="auto">
 						<!-- <video controls autoplay muted loop> -->
-							<source src = "./resources/hotdog_rgb.mp4" type="video/mp4">
+							<source src = "./resources/videos/mic_cat.mp4" type="video/mp4">
 							Your browser does not support the video tag.
 						</video>
 					</center>
@@ -336,24 +341,31 @@
 		</table>
 	</center>
 
+	
+
 	<hr>
 
 	<table align=center width=1200px>
 		<center><h1>Abstract & Method</h1></center>
 		<tr>
 			<td>
-				Neural Radiance Fields (NeRFs) have recently attracted significant attention due to their advanced capability in photorealistic view synthesis. 
-				However, NeRF-based methods decompose the scene into a 5D continuous radiance field consisting of independently sampled spatial points along 
-				individual rays. This independence lacks the modeling capacity for local smoothness within the color domain and spatial dependencies, 
-				resulting in an underutilization of spatial relationships in the scene. This paper specifically addresses NeRF-based methods based on 
-				dense sampling and proposes a novel and efficient method for attribute mixing in both radiance field and color domain, termed MixNeRF. 
-				Our method supplements the missing structural modeling capabilities and smoothness in synthesized views of NeRFs, significantly enhancing 
-				the view synthesis performance. We employ learnable dynamic kernel strategies to perform global radiance field mixing and local pixel 
-				mixing in both the radiance field space and color domain. Specifically, we globally blend colors and volume densities, respectively, 
-				in the radiance field space, resulting in the target pixel values after volume rendering. Then, we perform local blending in the color domain 
-				on the synthesized pixel patch to increase their smoothness, introducing Plücker coordinates as view features to ensure view consistency. 
-				Through extensive qualitative and quantitative analysis across synthetic and real datasets, our method demonstrates substantial performance 
-				improvements for NeRF-based methods.
+				Recent advancements in neural rendering methods, such as Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3D-GS), 
+				have significantly revolutionized photo-realistic novel view synthesis of scenes with multiple photos or videos as input. 
+				However, existing approaches within the NeRF and 3D-GS frameworks often assume the independence of point sampling and ray casting, 
+				which are intrinsic to volume rendering and alpha-blending techniques. 
+				These underlying assumptions limit the ability to aggregate context within subspaces, 
+				such as densities and colors in the radiance fields and pixels on the image plane, 
+				leading to synthesized images that lack fine details and smoothness. 
+				To overcome this, we propose a universal framework, MixRF, comprising a Radiance Field Mixer (RF-mixer) and a Color Domain Mixer (CD-mixer), 
+				to sufficiently aggregate and fully explore information in neighboring sampled points and casting rays, separately. 
+				The RF-mixer treats sampled points as an explicit point cloud, 
+				enabling the aggregation of density and color attributes from neighboring points to better capture local geometry and appearance. 
+				Meanwhile, the CD-mixer rearranges rendered pixels on the sub-image plane, improving smoothness and recovering fine details and textures. 
+				Both mixers employ a kernel-based mixing strategy to facilitate effective and controllable attribute aggregation, 
+				ensuring a more comprehensive exploration of radiance values and pixel information. 
+				Extensive experiments demonstrate that our MixRF framework is compatible with radiance field-based methods, 
+				including NeRF and 3D-GS designs. The proposed framework dramatically enhances performance in both qualitative and quantitative evaluations, 
+				with less than a <span class="math-font">25%</span> increase in computational overhead during inference.
 			</td>
 		</tr>
 	</table>
