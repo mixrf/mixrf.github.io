@@ -142,6 +142,10 @@
 	<link rel="stylesheet" href="./definitive-image-comparison-slider-master/src/dics.css">
 	<script src="./definitive-image-comparison-slider-master/src/dics.js"></script>
 	<script>
+		window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], }, chtml: { scale: 0.8 }};
+	</script>
+	<script src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
+	<script>
     document.addEventListener('DOMContentLoaded', domReady);
     
     function domReady() {
@@ -174,7 +178,7 @@
 				<tr>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:36px">MixRF: Integrating Sampled Points and Ray Casting Universal Mixing Radiance Fields</span>
+							<span style="font-size:30px">MixRF: Integrating Sampled Points and Ray Casting for Universal Mixing Radiance Fields</span>
 						</center>
 					</td>
 				</tr>
@@ -294,7 +298,33 @@
 	</center>
 
 	<hr>
+	<!-- <hr> -->
 
+	<table align=center width=1200px>
+		<center><h1>Abstract</h1></center>
+		<tr>
+			<td>
+				Recent advancements in neural rendering methods, such as Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3D-GS), 
+				have significantly revolutionized photo-realistic novel view synthesis of scenes with multiple photos or videos as input. 
+				However, existing approaches within the NeRF and 3D-GS frameworks often assume the independence of point sampling and ray casting, 
+				which are intrinsic to volume rendering and alpha-blending techniques. 
+				These underlying assumptions limit the ability to aggregate context within subspaces, 
+				such as densities and colors in the radiance fields and pixels on the image plane, 
+				leading to synthesized images that lack fine details and smoothness. 
+				To overcome this, we propose a universal framework, MixRF, comprising a Radiance Field Mixer (RF-mixer) and a Color Domain Mixer (CD-mixer), 
+				to sufficiently aggregate and fully explore information in neighboring sampled points and casting rays, separately. 
+				The RF-mixer treats sampled points as an explicit point cloud, 
+				enabling the aggregation of density and color attributes from neighboring points to better capture local geometry and appearance. 
+				Meanwhile, the CD-mixer rearranges rendered pixels on the sub-image plane, improving smoothness and recovering fine details and textures. 
+				Both mixers employ a kernel-based mixing strategy to facilitate effective and controllable attribute aggregation, 
+				ensuring a more comprehensive exploration of radiance values and pixel information. 
+				Extensive experiments demonstrate that our MixRF framework is compatible with radiance field-based methods, 
+				including NeRF and 3D-GS designs. The proposed framework dramatically enhances performance in both qualitative and quantitative evaluations, 
+				with less than a <span class="math-font">25%</span> increase in computational overhead during inference.
+			</td>
+		</tr>
+	</table>
+	<br>
 	<center>
 		<table align=center width=1200px>
 			<tr>
@@ -306,17 +336,105 @@
 			</tr>
 		</table>
 	</center>
-
+	<br>
 	<div class="centered">
         <table>
             <tr>
                 <td>
-                    Overview of MixRF pipeline.
+                    <strong>Overview of MixRF pipeline.</strong> Our method incorporates two modules that seamlessly integrate into traditional neural rendering pipelines: the RF-mixer and CD-mixer. The RF-mixer performs a two-stage aggregation of radiance values (i.e., density and color) within a subspace. This involves aggregating sampled points at the same depth across neighboring rays (inter-ray) and adjacent points along the same ray (intra-ray), effectively fusing geometric and appearance information from surrounding points. The CD-mixer first refines rendered pixel patches with Plücker coordinates as a view consistency constraint, then mixes pixels within sub-image planes, guided by an error map derived from the comparison between the rendered and refined patches, thereby facilitating targeted texture recovery.
                 </td>
             </tr>
         </table>
     </div>
+	<br>
+	<center>
+		<table align=center width=1200px>
+			<tr>
+				<td width=1200px>
+					<center>
+						<img class="round" style="width:1200px" src="./resources/RF-Mixer.jpg"/>
+					</center>
+				</td>
+			</tr>
+		</table>
+	</center>
+	<br>
+	<div class="centered">
+		<table>
+			<tr>
+				<td>
+					<strong>Overview of RF-mixer.</strong> 
+					We perform a two-stage integration process that involves mixing sample attributes (i.e., density and color) 
+					within neighboring rays (inter-ray) at the same sampling depth and among adjacent samples along the ray (intra-ray). 
+					Initially, we extract NeRF variables, including densities, colors, and their associated features $ \{\sigma, \boldsymbol{c}, \boldsymbol f_{\sigma}, \boldsymbol f_c \} $. 
+					Subsequently, we feed $ \{ \sigma, \boldsymbol f_{\sigma} \} $ and $ \{ \boldsymbol c, \boldsymbol f_c \} $ into the weight predictor $ \mathcal G $ and block extractor $ \mathcal E $, 
+					separately deriving corresponding sets of mixing weights and local blocks $ \{\boldsymbol W_{\sigma}, \boldsymbol B_{\sigma} \} $ and $ \{\boldsymbol W_c, \boldsymbol B_c \} $. 
+					This is followed by a weighted summation of elements within each set, yielding the inter-ray mixed density and color $ \{\sigma', \boldsymbol c' \} $. 
+					Analogously, the intra-ray mixed density and color $ \{\sigma'', \boldsymbol c'' \} $ are obtained from variables $ \{\sigma', \boldsymbol c', \boldsymbol f_{\sigma}, \boldsymbol f_c \} $ in the second stage. 
+					Our RF-mixer is trained end-to-end, supervised by the sum of the $L_2$ distances between the ground truth and pixels by volume rendered (VR).
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<br>
+
+	<center>
+		<table align=center width=1200px>
+			<tr>
+				<td width=1200px>
+					<center>
+						<img class="round" style="width:1200px" src="./resources/CD-Mixer.jpg"/>
+					</center>
+				</td>
+			</tr>
+		</table>
+	</center>
 	
+	<div class="centered">
+        <table>
+            <tr>
+                <td>
+                    <strong>Overview of CD-mixer.</strong>
+					Initially, we refine the rendered pixel patch $ \boldsymbol C_{vr} $ by decoding concatenated features from the rendered pixel and the camera view. 
+					To ensure view consistency, we use Plucker coordinates to represent a ray $ \boldsymbol r = (\boldsymbol d, \boldsymbol p \times \boldsymbol d) $, 
+					establishing a correspondence with the pixel, where $\boldsymbol p $ and $\boldsymbol d $ are the camera position and ray direction, respectively. 
+					Subsequently, the weight predictor $\mathcal G_{\text{2D}} $ utilizes the error map between the pixel patched of 
+					the rendered $\boldsymbol{C}_{vr}$ and refined $\boldsymbol{C}_{rf}$ to predict mixing weights $\boldsymbol{W}_p$. 
+					Meanwhile, the block extractor $\mathcal E_{\text{2D}} $ converts the refined pixels into corresponding local blocks $\boldsymbol{B}_p$. 
+					The final mixed pixels are obtained through a weighted summation between $ \boldsymbol W_p $ and $ \boldsymbol B_p $.
+				</td>
+            </tr>
+        </table>
+    </div>
+
+	<br>
+
+	<center>
+		<table align=center width=1200px>
+			<tr>
+				<td width=1200px>
+					<center>
+						<img class="round" style="width:1200px" src="./resources/NeRF-res.jpg"/>
+					</center>
+				</td>
+			</tr>
+		</table>
+	</center>
+	<br>
+	<center>
+		<table align=center width=1200px>
+			<tr>
+				<td width=1200px>
+					<center>
+						<img class="round" style="width:1200px" src="./resources/NeRF-tab.png"/>
+					</center>
+				</td>
+			</tr>
+		</table>
+	</center>
+	<br>
+
 	<center>
 		<table align=center width=1200px>
 			<tr>
@@ -342,44 +460,6 @@
 	</center>
 
 	
-
-	<hr>
-
-	<table align=center width=1200px>
-		<center><h1>Abstract & Method</h1></center>
-		<tr>
-			<td>
-				Recent advancements in neural rendering methods, such as Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3D-GS), 
-				have significantly revolutionized photo-realistic novel view synthesis of scenes with multiple photos or videos as input. 
-				However, existing approaches within the NeRF and 3D-GS frameworks often assume the independence of point sampling and ray casting, 
-				which are intrinsic to volume rendering and alpha-blending techniques. 
-				These underlying assumptions limit the ability to aggregate context within subspaces, 
-				such as densities and colors in the radiance fields and pixels on the image plane, 
-				leading to synthesized images that lack fine details and smoothness. 
-				To overcome this, we propose a universal framework, MixRF, comprising a Radiance Field Mixer (RF-mixer) and a Color Domain Mixer (CD-mixer), 
-				to sufficiently aggregate and fully explore information in neighboring sampled points and casting rays, separately. 
-				The RF-mixer treats sampled points as an explicit point cloud, 
-				enabling the aggregation of density and color attributes from neighboring points to better capture local geometry and appearance. 
-				Meanwhile, the CD-mixer rearranges rendered pixels on the sub-image plane, improving smoothness and recovering fine details and textures. 
-				Both mixers employ a kernel-based mixing strategy to facilitate effective and controllable attribute aggregation, 
-				ensuring a more comprehensive exploration of radiance values and pixel information. 
-				Extensive experiments demonstrate that our MixRF framework is compatible with radiance field-based methods, 
-				including NeRF and 3D-GS designs. The proposed framework dramatically enhances performance in both qualitative and quantitative evaluations, 
-				with less than a <span class="math-font">25%</span> increase in computational overhead during inference.
-			</td>
-		</tr>
-	</table>
-	<br>
-	<table align=center width=1200px>
-		<tr>
-			<td align=center width=1200px>
-				<center>
-					<td><img class="round" style="width:1200px" src="./resources/color_mix.png"/></td>
-				</center>
-			</td>
-		</tr>
-	</table>
-	<br>
 
 	<table align=center width=1200px>
 		<center><h1><a href="https://research.nvidia.com/publication/2020-07_FLIP">FLIP</a> Comparison</h1></center>
