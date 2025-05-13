@@ -178,7 +178,7 @@
 				<tr>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:30px">MixRF: Integrating Sampled Points and Ray Casting for Universal Mixing Radiance Fields</span>
+							<span style="font-size:30px">MixRF: Universal Mixed Radiance Fields with Points and Rays Aggregation</span>
 						</center>
 					</td>
 				</tr>
@@ -190,21 +190,21 @@
 				<tr>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:24px"><a href="https://en.wikipedia.org/wiki/James_J._Gibson">Haiyang Bai</a></span>
+							<span style="font-size:24px"><a href="https://openreview.net/profile?id=~Haiyang_Bai1">Haiyang Bai</a></span>
 							<br>
 							<span style="font-size:14px">Nanjing University</span>
 						</center>
 					</td>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:24px"><a href="https://en.wikipedia.org/wiki/James_J._Gibson">Tao Lu</a></span>
+							<span style="font-size:24px"><a href="https://inspirelt.github.io/">Tao Lu</a></span>
 							<br>
-							<span style="font-size:14px">Nanjing University</span>
+							<span style="font-size:14px">Brown University</span>
 						</center>
 					</td>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:24px"><a href="https://en.wikipedia.org/wiki/James_J._Gibson">Jiaqi Zhu</a></span>
+							<span style="font-size:24px"><a href="https://openreview.net/profile?id=~Jiaqi_Zhu4">Jiaqi Zhu</a></span>
 							<br>
 							<span style="font-size:14px">Nanjing University</span>
 						</center>
@@ -221,28 +221,28 @@
 				<tr>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:24px"><a href="https://en.wikipedia.org/wiki/James_J._Gibson">Chang Gou</a></span>
+							<span style="font-size:24px"><a href="https://ieeexplore.ieee.org/author/399619497226084">Chang Gou</a></span>
 							<br>
 							<span style="font-size:14px">Nanjing University</span>
 						</center>
 					</td>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:24px"><a href="https://en.wikipedia.org/wiki/James_J._Gibson">Jie Guo</a></span>
+							<span style="font-size:24px"><a href="https://cs.nju.edu.cn/51/c2/c56396a86466/page.htm">Jie Guo</a></span>
 							<br>
 							<span style="font-size:14px">Nanjing University</span>
 						</center>
 					</td>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:24px"><a href="https://en.wikipedia.org/wiki/James_J._Gibson">Yanwen Guo</a></span>
+							<span style="font-size:24px"><a href="https://cs.nju.edu.cn/ywguo/">Yanwen Guo</a></span>
 							<br>
 							<span style="font-size:14px">Nanjing University</span>
 						</center>
 					</td>
 					<td align=center width=300px>
 						<center>
-							<span style="font-size:24px"><a href="https://en.wikipedia.org/wiki/James_J._Gibson">Lijun Chen</a></span>
+							<span style="font-size:24px"><a href="https://cs.nju.edu.cn/58/16/c2639a153622/page.htm">Lijun Chen</a></span>
 							<br>
 							<span style="font-size:14px">Nanjing University</span>
 						</center>
@@ -268,12 +268,12 @@
 					</td>
 					<td align=center> <span style="font-size:24pt">
 						<center>
-							<span style="font-size:24px"><a href='https://github.com/richzhang/webpage-template'>[GitHub]</a></span><br>
+							<span style="font-size:24px"><a href='https://mixrf.github.io/'>[Project Page]</a></span><br>
 						</center>
 					</td>
 					<td align=center> <span style="font-size:24pt">
 						<center>
-							<span style="font-size:24px"><a href='https://github.com/richzhang/webpage-template'>[Code, Datasets]</a></span><br>
+							<span style="font-size:24px"><a href='https://mixrf.github.io/'>[Code](Coming Soon)</a></span><br>
 						</center>
 					</td>
 
@@ -304,23 +304,28 @@
 		<center><h1>Abstract</h1></center>
 		<tr>
 			<td>
-				Recent advancements in neural rendering methods, such as Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3D-GS), 
-				have significantly revolutionized photo-realistic novel view synthesis of scenes with multiple photos or videos as input. 
-				However, existing approaches within the NeRF and 3D-GS frameworks often assume the independence of point sampling and ray casting, 
-				which are intrinsic to volume rendering and alpha-blending techniques. 
-				These underlying assumptions limit the ability to aggregate context within subspaces, 
-				such as densities and colors in the radiance fields and pixels on the image plane, 
-				leading to synthesized images that lack fine details and smoothness. 
-				To overcome this, we propose a universal framework, MixRF, comprising a Radiance Field Mixer (RF-mixer) and a Color Domain Mixer (CD-mixer), 
-				to sufficiently aggregate and fully explore information in neighboring sampled points and casting rays, separately. 
-				The RF-mixer treats sampled points as an explicit point cloud, 
-				enabling the aggregation of density and color attributes from neighboring points to better capture local geometry and appearance. 
-				Meanwhile, the CD-mixer rearranges rendered pixels on the sub-image plane, improving smoothness and recovering fine details and textures. 
-				Both mixers employ a kernel-based mixing strategy to facilitate effective and controllable attribute aggregation, 
-				ensuring a more comprehensive exploration of radiance values and pixel information. 
-				Extensive experiments demonstrate that our MixRF framework is compatible with radiance field-based methods, 
-				including NeRF and 3D-GS designs. The proposed framework dramatically enhances performance in both qualitative and quantitative evaluations, 
-				with less than a <span class="math-font">25%</span> increase in computational overhead during inference.
+				<p>
+					Recent advancements in neural rendering methods, particularly Neural Radiance Fields (NeRF) and 3D Gaussian Splatting (3D-GS), 
+					have revolutionized photo-realistic novel view synthesis from multiple input images or videos. 
+					However, current approaches in both NeRF and 3D-GS frameworks typically treat point sampling and ray casting as independent processes, 
+					which are fundamental to volume rendering and alpha-blending techniques. 
+					This independence assumption restricts the effective aggregation of contextual information within subspaces, 
+					such as densities and colors in radiance fields and pixels on the image plane, 
+					resulting in synthesized images that lack fine details and smoothness.
+					To address these limitations, we introduce MixRF, a universal framework that consists of two key components: 
+					the Radiance Field Mixer (RF-mixer) and the Color Domain Mixer (CD-mixer). 
+					These components work together to effectively aggregate and explore information from neighboring sampled points and casting rays. 
+					The RF-mixer treats sampled points as an explicit point cloud, enabling the aggregation of density and color attributes from neighboring points 
+					to better capture local geometry and appearance. 
+					Meanwhile, the CD-mixer rearranges rendered pixels on the sub-image plane, 
+					improving smoothness and recovering fine details and textures. 
+					Both mixers employ a kernel-based mixing strategy to facilitate effective and controllable attribute aggregation, 
+					ensuring a more comprehensive exploration of radiance values and pixel information.
+					Through extensive experiments, we demonstrate that our MixRF framework is compatible with various radiance field-based methods, 
+					including both NeRF and 3D-GS designs. 
+					The proposed framework significantly enhances performance in both qualitative and quantitative evaluations, 
+					while maintaining computational efficiency with less than a <span class="math-font">25%</span> increase in computational overhead during inference.
+				</p>
 			</td>
 		</tr>
 	</table>
@@ -511,7 +516,7 @@
 	</table>
 	<br>
 
-	<hr>
+	<!-- <hr>
 	<center><h1>Video</h1></center>
 	<p align="center">
 		<iframe width="1200" height="675" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen align="center"></iframe>
@@ -573,7 +578,7 @@
 				<b>Creative and Descriptive Paper Title.</b><br>
 				In Conference, 20XX.<br>
 				(hosted on <a href="">ArXiv</a>)<br>
-				<!-- (<a href="./resources/camera-ready.pdf">camera ready</a>)<br> -->
+				(<a href="./resources/camera-ready.pdf">camera ready</a>)<br>
 				<span style="font-size:4pt"><a href=""><br></a>
 				</span>
 			</td>
@@ -589,6 +594,27 @@
 		</tr>
 	</table>
 
+	<hr> -->
+	<br>
+
+	<table align=center width=900px>
+		<tr>
+			<td width=400px>
+				<left>
+					<center><h1>Citation</h1></center>
+					<pre style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; font-size: 14px;">
+@article{mixrf2025,
+  title={MixRF: Universal Mixed Radiance Fields with Points and Rays Aggregation},
+  author={Bai, Haiyang and Lu, Tao and Zhu, Jiaqi and Huang, Wei and Gou, Chang and Guo, Jie and Guo, Yanwen and Chen, Lijun},
+  journal={https://mixrf.github.io/},
+  year={2025}
+}</pre>
+				</left>
+			</td>
+		</tr>
+	</table>
+
+	<br>
 	<hr>
 	<br>
 
